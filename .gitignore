@@ -1,0 +1,22 @@
+# Certificate output (tracked via CI, not local)
+output/certs/
+output/.certbot-*
+
+# Secrets — never commit
+*.pem
+*.key
+*.crt
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Certbot internals
+.cerbot-work/
+.certbot-config/
+.certbot-logs/
+
+# Logs
+*.log
