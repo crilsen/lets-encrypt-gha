@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       domains:
-        description: "Comma-separated domains (e.g. example.com,api.example.com)"
+        description: "Comma-separated domains (e.g. example.com,*.example.com,api.example.com)"
         required: true
         type: string
       email:

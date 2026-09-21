@@ -8,6 +8,7 @@ output/.certbot-*
 *.crt
 .env
 .env.*
+!.env.example
 
 # OS
 .DS_Store
@@ -20,3 +21,22 @@ Thumbs.db
 
 # Logs
 *.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if using any tooling)
+node_modules/
+package-lock.json
+
+# Python (if using any tooling)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/

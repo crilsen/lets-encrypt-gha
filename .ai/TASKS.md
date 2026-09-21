@@ -6,12 +6,21 @@
 
 ## Planned
 
-- Populate project-specific context after this template is adopted.
+- Users should fork and configure with their own Cloudflare credentials
+- Test workflow with real credentials
+- Deploy certificates to production servers
 
 ## Blocked
 
-- Project architecture and technology choices are unknown because no implementation artifacts are present.
+- None.
 
 ## Completed
 
-- None.
+- Project structure created
+- Scripts and workflow implemented
+- Documentation written with placeholders
+- Contributing guidelines established
+- License file added
+- Quick start guide created
+- Configuration guides written
+- Project transformed into publishable template

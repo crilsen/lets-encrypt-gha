@@ -2,19 +2,19 @@
 
 ## Identity
 
-- **Name:** ai-agent-relay
-- **Objective:** A versioned, portable context layer that lets coding agents and agentic harnesses resume work without platform-specific chat history.
-- **Repository purpose:** Provide a reusable template to embed in a project repository.
-- **Status:** Initial context template; no application or infrastructure implementation is present.
+- **Name:** lets-encrypt-ga
+- **Objective:** Automated Let's Encrypt certificate generation pipeline using GitHub Actions with Cloudflare DNS-01 validation.
+- **Repository purpose:** Provide a reusable, open-source template for automated SSL/TLS certificate management.
+- **Status:** Production-ready template with comprehensive documentation.
 
 ## Observed
 
-- **Purpose:** Pipeline CI/CD para geração automatizada de certificados Let's Encrypt via GitHub Actions.
+- **Purpose:** CI/CD pipeline for automated Let's Encrypt certificate generation via GitHub Actions.
 - **Technologies:** Shell script (bash), certbot + python3-certbot-dns-cloudflare, GitHub Actions, Cloudflare DNS API.
-- **Validation method:** DNS-01 via Cloudflare API token (suporta wildcard e múltiplos SANs).
-- **Key type:** ECDSA (secp256r1/P-256) — mais rápido e seguro que RSA.
-- **Output:** Arquivos `.pem` (certificate, private-key, chain, fullchain) via GitHub Artifacts.
-- **Schedule:** Renovação automática bimestral via cron (`0 3 1 */2 *`), com trigger manual disponível.
+- **Validation method:** DNS-01 via Cloudflare API token (supports wildcards and multiple SANs).
+- **Key type:** ECDSA (secp256r1/P-256) — faster and more secure than RSA.
+- **Output:** `.pem` files (certificate, private-key, chain, fullchain) via GitHub Artifacts.
+- **Schedule:** Automatic bimonthly renewal via cron (`0 3 1 */2 *`), with manual trigger available.
 
 ## Template priorities
 
