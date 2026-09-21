@@ -11,6 +11,20 @@ on:
         description: "Email for Let's Encrypt registration"
         required: true
         type: string
+      dns_provider:
+        description: "DNS provider (cloudflare, route53, google, azure, digitalocean, linode, ovh, rfc2136)"
+        required: true
+        default: "cloudflare"
+        type: choice
+        options:
+          - cloudflare
+          - route53
+          - google
+          - azure
+          - digitalocean
+          - linode
+          - ovh
+          - rfc2136
 
   schedule:
     # Renew every 60 days (certs last 90)
@@ -20,6 +34,7 @@ env:
   CERT_NAME: letsencrypt-cert
   DOMAINS: ${{ inputs.domains || vars.LE_CERT_DOMAINS }}
   CERTBOT_EMAIL: ${{ inputs.email || vars.LE_CERTBOT_EMAIL }}
+  DNS_PROVIDER: ${{ inputs.dns_provider || vars.LE_DNS_PROVIDER || 'cloudflare' }}
 
 jobs:
   generate:
@@ -44,16 +59,70 @@ jobs:
           fi
           echo "Domains: ${DOMAINS}"
           echo "Email: ${CERTBOT_EMAIL}"
+          echo "DNS Provider: ${DNS_PROVIDER}"
 
       - name: Install certbot + DNS plugin
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq certbot python3-certbot-dns-cloudflare
+          sudo apt-get install -y -qq certbot python3-pip
+          
+          case "${DNS_PROVIDER}" in
+            cloudflare)
+              sudo pip3 install certbot-dns-cloudflare
+              ;;
+            route53)
+              sudo pip3 install certbot-dns-route53
+              ;;
+            google)
+              sudo pip3 install certbot-dns-google
+              ;;
+            azure)
+              sudo pip3 install certbot-dns-azure
+              ;;
+            digitalocean)
+              sudo pip3 install certbot-dns-digitalocean
+              ;;
+            linode)
+              sudo pip3 install certbot-dns-linode
+              ;;
+            ovh)
+              sudo pip3 install certbot-dns-ovh
+              ;;
+            rfc2136)
+              sudo pip3 install certbot-dns-rfc2136
+              ;;
+            *)
+              echo "::error::Unsupported DNS provider: ${DNS_PROVIDER}"
+              exit 1
+              ;;
+          esac
 
       - name: Generate certificate
         env:
+          # Cloudflare
           CF_Token: ${{ secrets.CF_API_TOKEN }}
           CF_Zone_ID: ${{ secrets.CF_ZONE_ID }}
+          # AWS Route53
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Google Cloud
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          # Azure
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # DigitalOcean
+          DO_API_TOKEN: ${{ secrets.DO_API_TOKEN }}
+          # Linode
+          LINODE_API_TOKEN: ${{ secrets.LINODE_API_TOKEN }}
+          # OVH
+          OVH_APPLICATION_KEY: ${{ secrets.OVH_APPLICATION_KEY }}
+          OVH_APPLICATION_SECRET: ${{ secrets.OVH_APPLICATION_SECRET }}
+          OVH_CONSUMER_KEY: ${{ secrets.OVH_CONSUMER_KEY }}
+          # RFC 2136
+          RFC2136_NAMESERVER: ${{ secrets.RFC2136_NAMESERVER }}
+          RFC2136_CREDENTIALS: ${{ secrets.RFC2136_CREDENTIALS }}
         run: |
           chmod +x scripts/generate-cert.sh
           scripts/generate-cert.sh
@@ -116,6 +185,7 @@ jobs:
           echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| Domains | \`${DOMAINS}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| Email | \`${CERTBOT_EMAIL}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| DNS Provider | \`${DNS_PROVIDER}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| Run | #${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Output Files" >> $GITHUB_STEP_SUMMARY
