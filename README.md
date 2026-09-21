@@ -1,4 +1,4 @@
-# Let's Encrypt Certificate Pipeline
+# lets-encrypt-gha
 
 Geração automatizada de certificados Let's Encrypt via GitHub Actions, com validação DNS-01 (Cloudflare) e suporte a múltiplos SANs.
 
