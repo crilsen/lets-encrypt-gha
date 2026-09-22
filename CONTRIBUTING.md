@@ -10,8 +10,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 2. Click the "Fork" button
 3. Clone your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/lets-encrypt-ga.git
-   cd lets-encrypt-ga
+   git clone https://github.com/YOUR_USERNAME/lets-encrypt-gha.git
+   cd lets-encrypt-gha
    ```
 
 ### 2. Create a Branch
@@ -69,7 +69,7 @@ git push origin feature/your-feature-name
 - Bash shell
 - Git
 - certbot (for testing)
-- Cloudflare account with API access
+- DNS provider account (Cloudflare, AWS, Google Cloud, Azure, DigitalOcean, Linode, OVH, or RFC 2136)
 
 ### Local Testing
 
@@ -92,9 +92,9 @@ git push origin feature/your-feature-name
 
 ### Testing with Mock Credentials
 
-For testing without real Cloudflare credentials:
+For testing without real DNS provider credentials:
 
-1. Create a test Cloudflare account
+1. Create a test account with your DNS provider
 2. Use a test domain you control
 3. Never commit real credentials
 
@@ -130,7 +130,7 @@ When reporting bugs, please include:
 2. **Steps to reproduce**: Step-by-step instructions
 3. **Expected behavior**: What you expected to happen
 4. **Actual behavior**: What actually happened
-5. **Environment**: OS, shell, certbot version
+5. **Environment**: OS, shell, certbot version, DNS provider
 6. **Logs**: Any relevant error messages
 
 ### Feature Requests
@@ -162,6 +162,17 @@ If you discover a security vulnerability, please report it responsibly:
 - Use GitHub Secrets for sensitive data
 - Rotate API tokens regularly
 - Follow least privilege principle
+
+## Adding Support for New DNS Providers
+
+To add support for a new DNS provider:
+
+1. **Research the provider's API** and certbot plugin availability
+2. **Add provider-specific validation** in `scripts/generate-cert.sh`
+3. **Add credential creation** function
+4. **Update the workflow** to include provider secrets
+5. **Update documentation** (README, GUIDE, QUICKSTART)
+6. **Test thoroughly** with the new provider
 
 ## License
 

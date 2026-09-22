@@ -1,4 +1,4 @@
-# lets-encrypt-gha - Project Transformation Summary
+# lets-encrypt-gha - Integration Summary
 
 ## What Was Done
 
